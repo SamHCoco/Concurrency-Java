@@ -24,12 +24,14 @@ Concurrency allows:
 - **Thread:** A thread is a unit of execution within a process that, similarly to a process, has its own memory space called a ***thread stack***. All threads created by a process have access to that processes' heap (memory and files). A single process can have multiple threads.
 
 ### Using Threads in Java
-Java provides the *java.lang.Thread* class for working with threads.
+Java provides the *java.lang.Thread* class or *java.lang.Runnable* interface for working with threads.
 ```Java
 import java.lang.Thread;
+import java.lang.Runnable;
 ```
+#### Creating Threads
 There are 2 approaches of creating new threads in Java, outlined below:
-1. ) Creating a class that inherits from the *Thread* class and overriding the *run()* method. The code to be executed in a new thread is placed inside the *run()* method.
+1. ) A new thread may be created by creating a class that inherits from the *Thread* class and overriding the *run()* method. The code to be executed in a new thread is placed inside the *run()* method.
 
 ```java
 import java.lang.Thread;
@@ -44,3 +46,53 @@ public class Thread1 extends Thread {
     }
 }
 ```
+2. ) New threads may also be created by creating a class that implements the *Runnable* interface provided by *java.lang.Runnable* and implementing the *run()* method of the interface, placing the code to be executed by the new thread inside the *run()* method.
+
+```Java
+import java.lang.Runnable;
+
+public class RunnableThread implements Runnable {
+    private static final String threadName = "RUNNABLE-THREAD";
+
+    public void run(){
+        System.out.println("This message is from: " + threadName);
+    }
+}
+```
+#### Running Threads
+- To run a thread created through approach *1)*, we instantiate a *Thread* object, here *thread1* and *thread2*, then call the Thread objects' *start()* methods from the *'main'* thread:
+
+```Java
+import java.lang.Thread;
+
+public class Main {
+
+    public static void main(String[] args) {
+    	System.out.println("This message is from: " + Thread.currentThread().getName().toUpperCase());
+	    Thread thread1 = new Thread1();
+	    Thread thread2 = new Thread2();
+	    thread1.start();
+	    thread2.start();
+    }
+}
+```
+*Note: 'Thread2' class available in source code*.
+##### Output:
+![](RunningThreadDemo.png)
+- To run a thread created through approach *2)*, a *Thread* object is instantiated along with an instance of our implemented *Runnable* class, which is passed as an argument to the constructor of the *Thread* object. The thread is ran by calling the *start()* method of the *Thread* object.
+
+```Java
+import java.lang.Thread;
+
+public class Main {
+
+    public static void main(String[] args) {
+    	System.out.println("This message is from: " + Thread.currentThread().getName().toUpperCase());
+
+    	Thread runnableThread = new Thread(new RunnableThread());
+	    runnableThread.start();
+    }
+}
+```
+##### Output:
+![](RunningThreadDemo2.png)
