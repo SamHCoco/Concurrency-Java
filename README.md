@@ -96,3 +96,49 @@ public class Main {
 ```
 ##### Output:
 ![](RunningThreadDemo2.png)
+
+## Thread Methods
+
+#### sleep(int milliseconds)
+The sleep method temporarily suspends the thread for the specified length of time, either milliseconds or milliseconds plus nanoseconds. This method is dependent on hardware as some hardware may not support the fine-tuning of thread sleep time to the desired level of granularity.
+
+**Usage:** Sleep is used to free computing resources when we know for certain that a thread execution will not be needed for a set amount of time.
+
+```java
+/** Thread prints first statement and sleeps for 2 seconds
+before printing the second.*/
+public void run(){
+      System.out.println("Thread beginning sleep");
+
+      try {
+          this.sleep(2000);
+      }catch(InterruptedException e){
+          System.out.println("Error: sleeping thread was interrupted");
+          return;
+      }
+
+      System.out.println("2 seconds elapsed: thread running again");
+}
+```  
+
+#### join()
+Given two threads, *Thread A* and *Thread B*, joining *Thread B* to *A* will result in *Thread B* only being executed when *Thread A* has finished executing.
+
+**Usage:** Joining is used when the execution of one thread relies on the output (execution) of another thread. For example, a *Thread A* may be responsible for downloading data and *Thread B* may handle reading that data and performing calculations. Joining *Thread B* to *A* ensures that *B* always has the data it needs to perform its function.   
+
+```Java
+/** The run method of Thread B */
+public void run(){
+    System.out.println("Thread B: I am initially running");
+
+    try {
+      threadA.join(); // joins Thread B to Thread A
+      System.out.println("Thread A finished executing: Thread B has resumed");
+    }catch(InterruptedException e){
+      System.out.println("Error: joining Thread B to A");
+      return;
+    }
+
+    System.out.println("Thread B now terminating");
+}
+```
