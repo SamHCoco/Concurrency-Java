@@ -54,6 +54,7 @@ import java.lang.Runnable;
 public class RunnableThread implements Runnable {
     private static final String threadName = "RUNNABLE-THREAD";
 
+    @Override
     public void run(){
         System.out.println("This message is from: " + threadName);
     }
@@ -100,7 +101,7 @@ public class Main {
 ## Thread Methods
 
 #### sleep(int milliseconds)
-The sleep method temporarily suspends the thread for the specified length of time, either milliseconds or milliseconds plus nanoseconds. This method is dependent on hardware as some hardware may not support the fine-tuning of thread sleep time to the desired level of granularity.
+The sleep method temporarily suspends the thread for the specified length of time, either milliseconds or milliseconds plus nanoseconds. This method is OS and JVM dependent as some operating systems may not support the fine-tuning of thread sleep time to the desired level of granularity.
 
 **Usage:** Sleep is used to free computing resources when we know for certain that a thread execution will not be needed for a set amount of time.
 
@@ -111,7 +112,7 @@ public void run(){
       System.out.println("Thread beginning sleep");
 
       try {
-          this.sleep(2000);
+          sleep(2000);
       }catch(InterruptedException e){
           System.out.println("Error: sleeping thread was interrupted");
           return;
@@ -140,5 +141,38 @@ public void run(){
     }
 
     System.out.println("Thread B now terminating");
+}
+```
+
+#### interrupt()
+
+The interrupt method is used to stop the execution of a thread so that it may perform another task. There are two ways for a thread register an interruption:
+1. The thread catches an *InterruptedException* thrown in the *run()* method.
+2. If *run()* calls no methods that could throw an *InterruptedException*, a thread will periodically call the *Interrupted()* method which returns true if another thread has interrupted the thread, or false otherwise.
+
+**Usage:** *interrupt()* is commonly used to terminate a thread's execution when the thread is no longer required.
+
+```java
+import java.lang.Thread;
+
+public class Main {
+
+    public static void main(String[] args) {
+        // In this example, 'thread1' is interrupted by the main thread.
+  	    Thread thread1 = new Thread1(){
+          @Override
+          public void run(){
+              try {
+                System.out.println("Interrupt example thread running");
+                sleep(2000);
+              }catch(InterruptedException e){
+                System.out.println("THREAD 1 was interrupted: thread terminating");
+                return;
+              }
+          }
+        };
+        thread1.start();
+        thread1.interrupt();
+    }
 }
 ```
