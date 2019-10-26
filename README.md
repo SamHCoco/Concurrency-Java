@@ -148,7 +148,7 @@ public void run(){
 
 The interrupt method is used to stop the execution of a thread so that it may perform another task. There are two ways for a thread register an interruption:
 1. The thread catches an *InterruptedException* thrown in the *run()* method.
-2. If *run()* calls no methods that could throw an *InterruptedException*, a thread will periodically call the *Interrupted()* method which returns true if another thread has interrupted the thread, or false otherwise.
+2. If *run()* calls no method that could throw an *InterruptedException*, the thread will periodically call the *Interrupted()* method which returns true if another thread has interrupted the thread, or false otherwise.
 
 **Usage:** *interrupt()* is commonly used to terminate a thread's execution when the thread is no longer required.
 
@@ -176,3 +176,71 @@ public class Main {
     }
 }
 ```
+##### Output:
+![](ThreadInterruptDemo.png)
+
+### Synchronization
+Synchronization is a means of controlling when threads execute and therefore access their associated heap.
+
+**Usage:** It allows developers to prevent *thread interference*, also known as *race conditions*.
+
+In Java, synchronization may be applied to the following:
+- Methods
+- Statements
+
+When a method is synchronized, it can only be executed by a single thread at any given time. All other threads which call on the synchronized method suspend until the thread currently executing the method has finished its call to the method.
+
+Furthermore, if a class has multiple synchronized methods, only one of these methods is executed at any given time. *Synchronized methods from the same class are never executed simultaneously*.
+
+Below is an example of application with no synchronization which results in thread interference:
+
+```java
+import java.lang.Thread;
+
+public class Main {
+
+    public static void main(String[] args) {
+  		Countdown countdown = new Countdown();
+
+  		Thread thread1 = new Thread1(){
+  			@Override
+  			public void run(){
+  				countdown.begin();
+  			}
+  		};
+
+  		Thread thread2 = new Thread2(){
+  			@Override
+  			public void run(){
+  				countdown.begin();
+  			}
+  		};
+
+  		thread1.start();
+  		thread2.start();
+    }
+}
+
+class Countdown {
+	private int i = 10;
+
+	public void begin(){
+		String threadName = Thread.currentThread().getName();
+		String color = "";
+
+		if(threadName.equals("THREAD-1")){
+			color = Color.BLUE;
+		} else if(threadName.equals("THREAD-2")){
+			color = Color.PURPLE;
+		}
+		while(i > 0){
+			System.out.println(color + threadName + ": i = " + i);
+			i--;
+		}
+	}
+}
+
+```
+
+##### Output:
+![](ThreadInterferenceDemo.png)
