@@ -208,7 +208,6 @@ public class Main {
   				countdown.begin();
   			}
   		};
-
   		Thread thread2 = new Thread2(){
   			@Override
   			public void run(){
@@ -244,3 +243,31 @@ class Countdown {
 
 ##### Output:
 ![](ThreadInterferenceDemo.png)
+
+*Example of thread interference*
+
+To synchronize a Java method, the **synchronized** key word is declared in the method signature, in this case we are synchronizing the *begin()* method of *Countdown* object:
+
+```Java
+// Counts down from 10 to 1, printing each value and the thread which printed it
+public synchronized void begin(){
+	String threadName = Thread.currentThread().getName();
+	String color = "";
+
+	if(threadName.equals("THREAD-1")){
+		color = Color.BLUE;
+	} else if(threadName.equals("THREAD-2")){
+		color = Color.PURPLE;
+	}
+
+	while(i > 0){
+		System.out.println(color + threadName + ": i = " + i);
+		i--;
+	}
+}
+```
+
+##### Output:
+![](MethodSynchronizationDemo.png)
+
+*Thread interference has been eliminated*
