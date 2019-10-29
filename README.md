@@ -271,3 +271,13 @@ public synchronized void begin(){
 ![](MethodSynchronizationDemo.png)
 
 *Thread interference has been eliminated*
+
+Java allows also **code blocks** to be synchronized, as opposed to synchronizing an entire method.
+
+Every Java object is associated with an *intrinsic lock*, also commonly known as a *monitor lock*, which can be used to achieve synchronization. This approach works as follows:
+- Synchronization of a block of statements that work on an object is achieved by forcing threads to acquire the object's lock. A thread will only execute a synchronized code block associated with an object when that thread has acquired the object's lock.
+- *Only one thread may hold an object's lock at any given time.* All other threads which wish to acquire the objects lock are suspend until the running thread releases it.
+
+![](CodeBlockSyncDemo.png)
+
+*Synchronization of code block for 'Countdown' class*
