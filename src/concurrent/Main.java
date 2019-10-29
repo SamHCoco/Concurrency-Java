@@ -28,7 +28,7 @@ class Countdown {
 	private int i = 10;
 
 	// Counts down from 10 to 1, printing each value and the thread which printed it
-	public synchronized void begin(){
+	public void begin(){
 		String threadName = Thread.currentThread().getName();
 		String color = "";
 
@@ -38,9 +38,11 @@ class Countdown {
 			color = Color.PURPLE;
 		}
 
-		while(i > 0){
-			System.out.println(color + threadName + ": i = " + i);
-			i--;
+		synchronized(this){
+			while(i > 0){
+				System.out.println(color + threadName + ": i = " + i);
+				i--;
+			}
 		}
 	}
 }
