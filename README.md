@@ -179,6 +179,7 @@ public class Main {
 ##### Output:
 ![](ThreadInterruptDemo.png)
 
+
 ### Synchronization
 Synchronization is a means of controlling when threads execute and therefore access their associated heap.
 
@@ -281,3 +282,15 @@ Every Java object is associated with an *intrinsic lock*, also commonly known as
 ![](CodeBlockSyncDemo.png)
 
 *Synchronization of code block for 'Countdown' class*
+
+#### Synchronization Methods: wait() & notify()
+
+These two methods may only be called from within synchronized code. They allow threads to communicate with each other. Their functions are as follows:
+
+*Wait()* - suspends the current thread, until another thread calls *notify()* on the same object.
+
+*notify()* - called by another thread to wake a thread that has been suspended with *wait()*.
+
+The usage of the *wait()* and *notify()* methods are best illustrated by a **Producer-Consumer** example:
+
+Consider a simple application which writes to and reads messages from a buffer:
